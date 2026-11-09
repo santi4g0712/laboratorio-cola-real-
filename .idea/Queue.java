@@ -1,25 +1,24 @@
-public class Queue public class Queue implements QueueInterface {
-    private QueueNode front;
-    private QueueNode rear;
+public class Queue implements QueueInterface {
+    private QueueNode head;
+    private QueueNode tail;
     private int size;
 
-    // Constructor
     public Queue() {
-        this.front = null;
-        this.rear = null;
+        this.head = null;
+        this.tail = null;
         this.size = 0;
     }
 
     @Override
     public void clear() {
-        front = null;
-        rear = null;
+        head = null;
+        tail = null;
         size = 0;
     }
 
     @Override
     public boolean isEmpty() {
-        return front == null;
+        return head == null;
     }
 
     @Override
@@ -27,10 +26,10 @@ public class Queue public class Queue implements QueueInterface {
         if (isEmpty()) {
             return null;
         }
-        Object item = front.getItem();
-        front = front.getNext();
-        if (front == null) {
-            rear = null;
+        Object item = head.getItem();
+        head = head.getNext();
+        if (head == null) {
+            tail = null;
         }
         size--;
         return item;
@@ -40,11 +39,11 @@ public class Queue public class Queue implements QueueInterface {
     public boolean insert(Object object) {
         QueueNode newNode = new QueueNode(object);
         if (isEmpty()) {
-            front = newNode;
-            rear = newNode;
+            head = newNode;
+            tail = newNode;
         } else {
-            rear.setNext(newNode);
-            rear = newNode;
+            tail.setNext(newNode);
+            tail = newNode;
         }
         size++;
         return true;
@@ -52,24 +51,23 @@ public class Queue public class Queue implements QueueInterface {
 
     @Override
     public boolean insert(Object object, int prioridad) {
-
         QueueNode newNode = new QueueNode(object, prioridad);
 
-        if (isEmpty() || prioridad < front.getPriority()) {
-            newNode.setNext(front);
-            front = newNode;
-            if (rear == null) {
-                rear = newNode;
+        if (isEmpty() || prioridad < head.getPriority()) {
+            newNode.setNext(head);
+            head = newNode;
+            if (tail == null) {
+                tail = newNode;
             }
         } else {
-            QueueNode current = front;
+            QueueNode current = head;
             while (current.getNext() != null && current.getNext().getPriority() <= prioridad) {
                 current = current.getNext();
             }
             newNode.setNext(current.getNext());
             current.setNext(newNode);
             if (newNode.getNext() == null) {
-                rear = newNode;
+                tail = newNode;
             }
         }
         size++;
@@ -83,7 +81,7 @@ public class Queue public class Queue implements QueueInterface {
 
     @Override
     public boolean search(Object object) {
-        QueueNode current = front;
+        QueueNode current = head;
         while (current != null) {
             if (current.getItem().equals(object)) {
                 return true;
@@ -96,7 +94,7 @@ public class Queue public class Queue implements QueueInterface {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
-        QueueNode current = front;
+        QueueNode current = head;
         while (current != null) {
             sb.append(current.getItem());
             if (current.getNext() != null) {
@@ -107,10 +105,4 @@ public class Queue public class Queue implements QueueInterface {
         sb.append("]");
         return sb.toString();
     }
-} {
-
-    QueueNode head;
-    QueueNode tail;
-    int size = 0;
-    boolean isPriorityQueue;
 }
